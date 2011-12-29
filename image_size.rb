@@ -80,6 +80,12 @@ module CarrierWave
     #      to get size information
     #   3. Needs some tests
 
+    extend ActiveSupport::Concern
+    include CarrierWave::Uploader::Callbacks
+    included do
+      after :cache, :capture_size_after_cache
+    end
+
     def image_width
       info_field(my_version_name).first rescue nil
     end
@@ -92,8 +98,6 @@ module CarrierWave
       info_field('content_type')
     end
 
-    CarrierWave::Uploader::Base::after :cache, :capture_size_before_cache
-
     protected
 
     def my_version_name
@@ -102,7 +106,7 @@ module CarrierWave
 
     private
 
-    def capture_size_before_cache(new_file) 
+    def capture_size_after_cache(new_file) 
       if has_info_field?
         if has_info?
           prev_content_type = info_field('content_type')

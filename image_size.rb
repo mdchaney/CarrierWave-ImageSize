@@ -83,7 +83,7 @@ module CarrierWave
     extend ActiveSupport::Concern
     include CarrierWave::Uploader::Callbacks
     included do
-      before :cache, :capture_size_before_cache
+      after :cache, :capture_size_after_cache
     end
 
     def image_width
@@ -106,7 +106,7 @@ module CarrierWave
 
     private
 
-    def capture_size_before_cache(new_file) 
+    def capture_size_after_cache(new_file) 
       if has_info_field?
         if has_info?
           prev_content_type = info_field('content_type')

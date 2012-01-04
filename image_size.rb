@@ -131,9 +131,9 @@ module CarrierWave
 
     def info_field(datum)
       if datum == 'content_type'
-        raw_info_field.split(/\n/).first
+        raw_info_field.split(/\r?\n/).first
       else
-        md = /^#{datum}:(\d+)x(\d+)$/.match(raw_info_field)
+        md = /^#{datum}:(\d+)x(\d+)/.match(raw_info_field)
         if md
           md[1..2]
         else
